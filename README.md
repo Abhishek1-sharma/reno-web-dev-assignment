@@ -1,104 +1,78 @@
 # Reno Notice Board
 
-A Notice Board assignment built with the required stack:
+A small notice board app built for the Reno web development assignment. It supports creating, viewing, editing, and deleting notices, with urgent notices shown first.
 
-- Next.js Pages Router (`pages/`)
-- Prisma Client for all database access
-- Hosted MySQL-compatible database support, with TiDB Cloud recommended
+## Tech Stack
+
+- Next.js Pages Router
+- Prisma
+- MySQL-compatible hosted database, tested with TiDB Cloud
 - Tailwind CSS
+- Vercel for deployment
 
 ## Features
 
-- Create, read, update, and delete notices end to end
-- API routes under `pages/api/` using `GET`, `POST`, `PUT`, `PATCH`, and `DELETE`
-- Server-side validation inside the API routes
-- Required title/body validation and valid date validation
-- Prisma-backed persistence
-- Urgent notices ordered first in the Prisma database query
-- Visible red `Urgent` badge
-- Delete confirmation before removal
-- Responsive card layout for phone and desktop
-- Optional notice image URL
+- List all notices as responsive cards
+- Add a new notice
+- Edit an existing notice with pre-filled values
+- Delete a notice after confirmation
+- Server-side validation in API routes
+- Urgent notices sorted first using Prisma `orderBy`
+- Optional image URL for notices
 
-## API routes
+## How To Run Locally
 
-All create, update, and delete operations go through Pages Router API routes.
+Install dependencies:
 
-- `GET /api/notices` returns all notices ordered by `priority`, then `publishDate`, then `createdAt`
-- `POST /api/notices` creates a notice and returns `201`
-- `GET /api/notices/:id` returns one notice or `404`
-- `PUT /api/notices/:id` updates a notice and returns `200`
-- `PATCH /api/notices/:id` updates a notice and returns `200`
-- `DELETE /api/notices/:id` deletes a notice and returns `204`
-- Unsupported methods return `405` with an `Allow` header
-- Invalid input returns `400` with field-level errors
+```bash
+npm install
+```
 
-## Assignment checklist
+Create a local environment file:
 
-- Uses Next.js Pages Router only; there is no `app/` directory
-- Uses Prisma schema and Prisma Client for database reads and writes
-- Uses a hosted database through `DATABASE_URL`, not local SQLite
-- Uses Tailwind CSS for clean responsive styling
-- Stores `title`, `body`, `category`, `priority`, `publishDate`, and optional `imageUrl`
-- Shows Edit and Delete actions on every notice card
-- Asks for confirmation before delete
-- Loads current notice values when editing
-- Keeps urgent-first ordering in the Prisma `orderBy` query, not browser sorting
-- Shows a visible red `Urgent` badge
+```bash
+cp .env.example .env
+```
 
-## Run locally
+Add your hosted database URL in `.env`:
 
-1. Install dependencies:
+```env
+DATABASE_URL="mysql://USER:PASSWORD@HOST:4000/reno_notice_board?sslaccept=strict"
+```
 
-   ```bash
-   npm install
-   ```
+Push the Prisma schema to the database:
 
-2. Create `.env` from the example:
+```bash
+npm run prisma:push
+```
 
-   ```bash
-   cp .env.example .env
-   ```
+Start the development server:
 
-3. Add a free hosted database URL to `.env`.
+```bash
+npm run dev
+```
 
-   TiDB Cloud free tier is recommended. Use the MySQL-compatible connection string as `DATABASE_URL`.
+Open:
 
-4. Push the Prisma schema:
+```text
+http://localhost:3000
+```
 
-   ```bash
-   npm run prisma:push
-   ```
+## API Routes
 
-5. Start the development server:
+- `GET /api/notices`
+- `POST /api/notices`
+- `GET /api/notices/:id`
+- `PUT /api/notices/:id`
+- `PATCH /api/notices/:id`
+- `DELETE /api/notices/:id`
 
-   ```bash
-   npm run dev
-   ```
+Create, update, and delete all go through `pages/api`. Validation is handled on the server before saving data.
 
-6. Open `http://localhost:3000`.
+## One Thing I Would Improve
 
-## Deploy on Vercel
+With more time, I would add authentication for admin users and proper image uploads instead of depending on external image URLs. That would make the notice management flow safer and more reliable in production.
 
-1. Push this project to a public GitHub repository with real commit history.
-2. Import the repository in Vercel using the free Hobby tier.
-3. Add `DATABASE_URL` in Vercel project environment variables.
-4. Deploy.
-5. Confirm the live Vercel URL opens publicly without login.
+## AI Usage
 
-## Before submitting
-
-- The GitHub repository is public.
-- The repository has multiple meaningful commits, not only one initial commit.
-- The Vercel deployment is public and opens without login.
-- The database is on a free hosted tier such as TiDB Cloud, Neon, or Supabase.
-- No paid service or credit-card-only service is required.
-- Both links are submitted through the email form: the live Vercel URL and the public GitHub repository URL.
-
-## One thing I would improve with more time
-
-I would add authenticated admin access and image upload storage, so only approved users can manage notices and images do not depend on external URLs.
-
-## AI usage
-
-AI was used to interpret the assignment requirements, generate the initial project structure, implement CRUD flows with Prisma and Next.js Pages Router, and prepare this README. The code was reviewed against the assignment checklist, especially server-side validation, API routes, database persistence, and urgent-first ordering.
+I used AI as a development assistant while building this assignment. It helped me cross-check the requirements, review edge cases such as server-side validation and urgent-first ordering, and improve the README wording. The implementation choices, database setup, testing, and final review were done by me while keeping the required stack and assignment rules in mind.

@@ -30,13 +30,14 @@ export function NoticeForm({ mode, initialValues, noticeId }: NoticeFormProps) {
     setIsSubmitting(true);
     setError("");
 
-    const endpoint = mode === "create" ? "/api/notices" : `/api/notices/${noticeId}`;
+    const endpoint =
+      mode === "create" ? "/api/notices" : `/api/notices/${noticeId}`;
     const method = mode === "create" ? "POST" : "PUT";
 
     const response = await fetch(endpoint, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values)
+      body: JSON.stringify(values),
     });
 
     const data = await response.json().catch(() => null);
@@ -52,7 +53,10 @@ export function NoticeForm({ mode, initialValues, noticeId }: NoticeFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-3xl rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-6xl rounded-lg border border-line bg-white p-5 shadow-sm sm:p-6"
+    >
       <div className="space-y-5">
         {error ? (
           <div className="rounded-md border border-orange-200 bg-orange-50 px-4 py-3 text-sm font-medium text-danger">
@@ -60,7 +64,7 @@ export function NoticeForm({ mode, initialValues, noticeId }: NoticeFormProps) {
           </div>
         ) : null}
 
-        <Field label="Title" error={fieldErrors?.title}>
+        <Field label="Title" error={fieldErrors?.title} required>
           <input
             value={values.title}
             onChange={(event) => updateField("title", event.target.value)}
@@ -70,7 +74,7 @@ export function NoticeForm({ mode, initialValues, noticeId }: NoticeFormProps) {
           />
         </Field>
 
-        <Field label="Body" error={fieldErrors?.body}>
+        <Field label="Body" error={fieldErrors?.body} required>
           <textarea
             value={values.body}
             onChange={(event) => updateField("body", event.target.value)}
@@ -81,7 +85,7 @@ export function NoticeForm({ mode, initialValues, noticeId }: NoticeFormProps) {
         </Field>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Category" error={fieldErrors?.category}>
+          <Field label="Category" error={fieldErrors?.category} required>
             <select
               value={values.category}
               onChange={(event) => updateField("category", event.target.value)}
@@ -95,7 +99,7 @@ export function NoticeForm({ mode, initialValues, noticeId }: NoticeFormProps) {
             </select>
           </Field>
 
-          <Field label="Priority" error={fieldErrors?.priority}>
+          <Field label="Priority" error={fieldErrors?.priority} required>
             <select
               value={values.priority}
               onChange={(event) => updateField("priority", event.target.value)}
@@ -111,11 +115,13 @@ export function NoticeForm({ mode, initialValues, noticeId }: NoticeFormProps) {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Publish date" error={fieldErrors?.publishDate}>
+          <Field label="Publish date" error={fieldErrors?.publishDate} required>
             <input
               type="date"
               value={values.publishDate}
-              onChange={(event) => updateField("publishDate", event.target.value)}
+              onChange={(event) =>
+                updateField("publishDate", event.target.value)
+              }
               className="w-full rounded-md border border-line px-3 py-2 text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-teal-100"
               required
             />
@@ -145,7 +151,11 @@ export function NoticeForm({ mode, initialValues, noticeId }: NoticeFormProps) {
             disabled={isSubmitting}
             className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
           >
-            {isSubmitting ? "Saving..." : mode === "create" ? "Create notice" : "Save changes"}
+            {isSubmitting
+              ? "Saving..."
+              : mode === "create"
+                ? "Create notice"
+                : "Save changes"}
           </button>
         </div>
       </div>
@@ -156,15 +166,21 @@ export function NoticeForm({ mode, initialValues, noticeId }: NoticeFormProps) {
 type FieldProps = {
   label: string;
   error?: string;
+  required?: boolean;
   children: React.ReactNode;
 };
 
-function Field({ label, error, children }: FieldProps) {
+function Field({ label, error, required = false, children }: FieldProps) {
   return (
     <label className="block space-y-2">
-      <span className="text-sm font-semibold text-ink">{label}</span>
+      <span className="text-sm font-semibold text-ink">
+        {label}
+        {required ? <span className="ml-1 text-danger">*</span> : null}
+      </span>
       {children}
-      {error ? <span className="block text-sm font-medium text-danger">{error}</span> : null}
+      {error ? (
+        <span className="block text-sm font-medium text-danger">{error}</span>
+      ) : null}
     </label>
   );
 }

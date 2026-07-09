@@ -16,8 +16,9 @@ export default function EditNoticePage({ noticeId, initialValues }: EditNoticePr
       <div className="mb-6">
         <Link
           href="/"
-          className="inline-flex text-sm font-semibold text-accent transition hover:text-teal-800 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+          className="mb-4 inline-flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-sm font-semibold text-ink shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
         >
+          <span aria-hidden="true">&larr;</span>
           Back to notices
         </Link>
         <p className="text-sm font-semibold uppercase tracking-normal text-accent">Edit</p>
