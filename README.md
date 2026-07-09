@@ -10,7 +10,7 @@ A Notice Board assignment built with the required stack:
 ## Features
 
 - Create, read, update, and delete notices end to end
-- API routes under `pages/api/` using `GET`, `POST`, `PUT`/`PATCH`, and `DELETE`
+- API routes under `pages/api/` using `GET`, `POST`, `PUT`, `PATCH`, and `DELETE`
 - Server-side validation inside the API routes
 - Required title/body validation and valid date validation
 - Prisma-backed persistence
@@ -19,6 +19,32 @@ A Notice Board assignment built with the required stack:
 - Delete confirmation before removal
 - Responsive card layout for phone and desktop
 - Optional notice image URL
+
+## API routes
+
+All create, update, and delete operations go through Pages Router API routes.
+
+- `GET /api/notices` returns all notices ordered by `priority`, then `publishDate`, then `createdAt`
+- `POST /api/notices` creates a notice and returns `201`
+- `GET /api/notices/:id` returns one notice or `404`
+- `PUT /api/notices/:id` updates a notice and returns `200`
+- `PATCH /api/notices/:id` updates a notice and returns `200`
+- `DELETE /api/notices/:id` deletes a notice and returns `204`
+- Unsupported methods return `405` with an `Allow` header
+- Invalid input returns `400` with field-level errors
+
+## Assignment checklist
+
+- Uses Next.js Pages Router only; there is no `app/` directory
+- Uses Prisma schema and Prisma Client for database reads and writes
+- Uses a hosted database through `DATABASE_URL`, not local SQLite
+- Uses Tailwind CSS for clean responsive styling
+- Stores `title`, `body`, `category`, `priority`, `publishDate`, and optional `imageUrl`
+- Shows Edit and Delete actions on every notice card
+- Asks for confirmation before delete
+- Loads current notice values when editing
+- Keeps urgent-first ordering in the Prisma `orderBy` query, not browser sorting
+- Shows a visible red `Urgent` badge
 
 ## Run locally
 
@@ -59,6 +85,15 @@ A Notice Board assignment built with the required stack:
 3. Add `DATABASE_URL` in Vercel project environment variables.
 4. Deploy.
 5. Confirm the live Vercel URL opens publicly without login.
+
+## Before submitting
+
+- The GitHub repository is public.
+- The repository has multiple meaningful commits, not only one initial commit.
+- The Vercel deployment is public and opens without login.
+- The database is on a free hosted tier such as TiDB Cloud, Neon, or Supabase.
+- No paid service or credit-card-only service is required.
+- Both links are submitted through the email form: the live Vercel URL and the public GitHub repository URL.
 
 ## One thing I would improve with more time
 
