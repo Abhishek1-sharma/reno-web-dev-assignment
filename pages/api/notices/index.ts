@@ -22,6 +22,10 @@ export default async function handler(
     res.status(400).json(parsed.errors);
     return;
   }
+  if (!parsed.data) {
+    res.status(400).json({ error: "Invalid notice data." });
+    return;
+  }
 
   try {
     const notice = await prisma.notice.create({ data: parsed.data });
